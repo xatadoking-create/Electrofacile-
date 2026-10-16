@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#081225">
+<title>EletroFacile — Apprendre l'électricité</title>
+<style>
+:root{--bg:#071225;--panel:#101f38;--panel2:#142743;--gold:#ffd166;--blue:#5cc8ff;--green:#62e6ad;--text:#f4f7ff;--muted:#b4c2d9;--red:#ff7d8b;--line:#2b3d59}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(ellipse at top,#132b4b 0,#071225 56%);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);min-height:100vh}
+button{font:inherit;cursor:pointer;border:0}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.wrap{max-width:1100px;margin:auto;padding:20px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{display:flex;gap:10px;align-items:center;font-weight:900;font-size:1.25rem}
+.logo{display:grid;place-items:center;width:43px;height:43px;border-radius:14px;background:linear-gradient(135deg,var(--gold),#ff9f43);color:#111a2c;font-size:1.6rem}
+.tag{font-size:.8rem;color:var(--muted)}
+.btn{padding:11px 15px;border-radius:12px;background:var(--panel2);color:var(--text);border:1px solid var(--line);font-weight:750}
+.btn:hover{filter:brightness(1.16);transform:translateY(-1px)}
+.primary{background:var(--gold);color:#152035;border-color:transparent}
+.blue{background:#174a70;border-color:#2876a8}
+.green{background:#15523f;border-color:#2a8b68}
+.hero{padding:52px 0 28px;max-width:780px}
+.eyebrow{color:var(--gold);font-weight:800;text-transform:uppercase;letter-spacing:2px;font-size:.78rem}
+.hero h1{font-size:clamp(2.25rem,6vw,4.5rem);line-height:1.04;margin:12px 0}
+.hero p{color:var(--muted);font-size:1.1rem;line-height:1.7;max-width:650px}
+.hero strong{color:var(--text)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px;margin:18px 0 30px}
+.card{background:linear-gradient(145deg,rgba(20,39,67,.96),rgba(12,27,49,.96));border:1px solid var(--line);border-radius:20px;padding:21px;box-shadow:0 12px 32px #0002}
+.card h2,.card h3{margin:8px 0}
+.card p{color:var(--muted);line-height:1.6}
+.bigicon{font-size:2rem}
+.card .btn{margin-top:8px}
+.sectionhead{display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap;margin:28px 0 12px}
+.sectionhead h2{margin:0;font-size:1.55rem}
+.sectionhead p{margin:4px 0;color:var(--muted)}
+.hidden{display:none!important}
+.view{animation:appear .2s ease}
+@keyframes appear{from{opacity:.4;transform:translateY(5px)}to{opacity:1;transform:none}}
+.back{margin:20px 0}
+.pill{display:inline-block;border:1px solid var(--line);background:#0c1a30;color:var(--muted);padding:6px 10px;border-radius:99px;font-size:.83rem}
+.definition{border-left:3px solid var(--gold)}
+.formula{font-family:ui-monospace,monospace;font-size:1.2rem;color:var(--gold);font-weight:900;background:#071225;padding:10px 12px;border-radius:10px;display:inline-block;margin:7px 0}
+.diagram{background:#08172b;border:1px solid var(--line);border-radius:16px;padding:12px;overflow:hidden}
+.diagram svg{width:100%;height:auto;max-height:230px}
+.diagram text{font-family:Arial,sans-serif;fill:#f4f7ff;font-size:12px}
+.lesson-num{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:10px;background:#214366;color:var(--blue);font-weight:900}
+.quizbox{max-width:780px;margin:18px auto}
+.quiztop{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.progress{height:8px;background:#263650;border-radius:20px;overflow:hidden;margin:16px 0}
+.progress div{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--green));transition:width .25s}
+.question{font-size:1.35rem;line-height:1.4;margin:22px 0}
+.answers{display:grid;gap:10px}
+.answer{display:block;text-align:left;width:100%;padding:15px;border:1px solid var(--line);border-radius:13px;background:#0b1a30;color:var(--text)}
+.answer:hover:not(:disabled){border-color:var(--blue);background:#122943}
+.answer.correct{border-color:var(--green);background:#124333}
+.answer.wrong{border-color:var(--red);background:#482331}
+.feedback{padding:13px;border-radius:12px;margin-top:14px;line-height:1.55}
+.feedback.ok{background:#123a30;border:1px solid #2a8b68}
+.feedback.no{background:#42202c;border:1px solid #a94459}
+.quizactions{display:flex;justify-content:flex-end;margin-top:16px}
+.score{font-size:3.4rem;font-weight:950;color:var(--gold);margin:5px}
+.settingrow{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
+input[type=checkbox]{width:22px;height:22px;accent-color:var(--gold)}
+.footer{color:#8193ad;text-align:center;padding:32px 0 18px;font-size:.85rem}
+.large-text{font-size:1.13rem}
+.note{border:1px solid #6b5830;background:#342b17;color:#ffe4a3;border-radius:12px;padding:13px;line-height:1.55}
+.small{font-size:.9rem;color:var(--muted)}
+@media(max-width:520px){.wrap{padding:15px}.hero{padding-top:35px}.card{padding:17px}.hero p{font-size:1rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div class="brand"><div class="logo">ϟ</div><div>EletroFacile<div class="tag">Comprendre l'électricité, étape par étape</div></div></div>
+  <button class="btn" onclick="showPage('settings')">⚙️ Paramètres</button>
+</header>
+<main>
+<section id="home" class="view">
+ <div class="hero">
+  <div class="eyebrow">⚡ Ton atelier d'électricité</div>
+  <h1>Apprends.<br><span style="color:var(--gold)">Comprends.</span> Progresse.</h1>
+  <p>Des notions de base aux circuits plus avancés, découvre l'électricité avec des <strong>leçons simples, des schémas et des quiz corrigés.</strong></p>
+  <button class="btn primary" onclick="showPage('learn')">Commencer à apprendre →</button>
+ </div>
+ <div class="sectionhead"><div><h2>Que veux-tu faire ?</h2><p>Choisis une section pour commencer.</p></div></div>
+ <div class="grid">
+  <article class="card"><div class="bigicon">📘</div><h3>Définitions</h3><p>Les mots importants expliqués simplement : tension, courant, résistance, puissance et sécurité.</p><button class="btn" onclick="showPage('definitions')">Voir les définitions →</button></article>
+  <article class="card"><div class="bigicon">🧠</div><h3>Quiz électrique</h3><p>Teste tes connaissances, choisis une réponse et lis la correction après chaque question.</p><button class="btn blue" onclick="showPage('quiz')">Choisir un niveau →</button></article>
+  <article class="card"><div class="bigicon">🛠️</div><h3>Apprentissage</h3><p>Des leçons progressives, des formules et des schémas de circuits.</p><button class="btn green" onclick="showPage('learn')">Ouvrir les leçons →</button></article>
+ </div>
+ <div class="sectionhead"><div><h2>Choisis ton niveau de quiz</h2><p>Tu peux recommencer autant de fois que tu veux.</p></div></div>
+ <div class="grid">
+  <article class="card"><span class="pill">Niveau 1</span><h3>🌱 Débutant</h3><p>Les bases, les unités et la sécurité.</p><button class="btn primary" onclick="startQuiz(0)">Jouer</button></article>
+  <article class="card"><span class="pill">Niveau 2</span><h3>🔧 Intermédiaire</h3><p>Formules simples et circuits.</p><button class="btn primary" onclick="startQuiz(1)">Jouer</button></article>
+  <article class="card"><span class="pill">Niveau 3</span><h3>⚡ Difficile</h3><p>Calculs et analyse des circuits.</p><button class="btn primary" onclick="startQuiz(2)">Jouer</button></article>
+  <article class="card"><span class="pill">Niveau 4</span><h3>🏆 Professionnel</h3><p>Protections, puissance et installations.</p><button class="btn primary" onclick="startQuiz(3)">Jouer</button></article>
+ </div>
+ <div class="note">⚠️ Les leçons servent à apprendre. Pour une installation réelle, coupe l'alimentation et fais appel à une personne qualifiée. Ne manipule jamais un circuit sous tension.</div>
+</section>
