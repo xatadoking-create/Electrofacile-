@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EletroFacile</title>
+<style>
+body{margin:0;background:#0b0f17;color:#f8fafc;font-family:Arial,sans-serif;padding:20px}
+main{max-width:650px;margin:auto}
+h1{color:#facc15}button{display:block;width:100%;padding:15px;margin:10px 0;border-radius:12px;border:1px solid #475569;background:#182233;color:white;font-size:16px}
+.primary{background:#facc15;color:#111827;font-weight:bold}
+#feedback{line-height:1.6}.hidden{display:none}
+</style>
+</head>
+<body><main>
+<h1>⚡ EletroFacile</h1>
+<p>Apprends l'électricité et teste tes connaissances !</p>
+<h2>Choisis ton niveau</h2>
+<button onclick="start(0)">Niveau 1 — Débutant</button>
+<button onclick="start(1)">Niveau 2 — Intermédiaire</button>
+<button onclick="start(2)">Niveau 3 — Avancé</button>
+<section id="quiz" class="hidden">
+<p id="counter"></p><h2 id="question"></h2><div id="answers"></div>
+<p id="feedback" aria-live="polite"></p><button id="next" class="primary" onclick="nextQ()">Question suivante</button>
+</section>
+<section id="result" class="hidden"><h2>Ton résultat</h2><h1 id="score"></h1><p id="remark"></p><button onclick="location.reload()">Recommencer</button></section>
+</main>
+<script>
+const data=[
+[
+["Quelle est l'unité de la tension ?","Le volt","L'ampère","Le watt",0,"La tension se mesure en volts (V)."],
+["Quelle est l'unité de l'intensité ?","L'ohm","L'ampère","Le volt",1,"L'intensité se mesure en ampères (A)."],
+["Quel appareil mesure la tension ?","Voltmètre","Ampèremètre","Ohmmètre",0,"Le voltmètre mesure la tension."],
+["Le cuivre est-il conducteur ?","Vrai","Faux","Seulement le plastique",0,"Le cuivre est un bon conducteur électrique."],
+["Quelle est l'unité de la résistance ?","Watt","Volt","Ohm",2,"La résistance se mesure en ohms (Ω)."],
+["Un circuit ouvert peut-il interrompre le courant ?","Vrai","Faux","Jamais",0,"Une coupure ouvre le circuit."],
+["Quel appareil mesure l'intensité ?","Voltmètre","Ampèremètre","Thermomètre",1,"L'ampèremètre mesure l'intensité."],
+["Le plastique est généralement isolant.","Vrai","Faux","Toujours conducteur",0,"De nombreux plastiques sont isolants."],
+["Quel symbole représente la tension ?","A","V","Ω",1,"V représente le volt."],
+["Un interrupteur peut ouvrir un circuit.","Vrai","Faux","Seulement un moteur",0,"L'interrupteur ouvre ou ferme le circuit."]
+],
+[
+["Quelle formule exprime la loi d'Ohm ?","U=R×I","U=R+I","I=R×U",0,"La loi d'Ohm est U = R × I."],
+["R=10 Ω et I=2 A. Quelle tension ?","5 V","20 V","12 V",1,"U = 10 × 2 = 20 V."],
+["Quelle est l'unité de puissance ?","Volt","Watt","Ohm",1,"La puissance se mesure en watts."],
+["Quelle formule calcule la puissance ?","P=U×I","P=U+I","P=U−I",0,"P = U × I."],
+["En série, le courant est le même dans les composants idéaux.","Vrai","Faux","Seulement en parallèle",0,"L'intensité est la même en série."],
+["3 Ω et 5 Ω en série donnent :","2 Ω","8 Ω","15 Ω",1,"En série, 3 + 5 = 8 Ω."],
+["Quel appareil mesure la puissance ?","Wattmètre","Voltmètre seul","Ohmmètre seul",0,"Le wattmètre mesure la puissance."],
+["En parallèle, la tension est identique aux bornes des branches idéales.","Vrai","Faux","Jamais",0,"Les branches en parallèle partagent la tension."],
+["12 V et 2 A donnent quelle puissance ?","6 W","14 W","24 W",2,"P = 12 × 2 = 24 W."],
+["Un ohmmètre mesure la résistance.","Vrai","Faux","Il mesure la fréquence",0,"L'ohmmètre mesure la résistance."]
+],
+[
+["1000 W pendant 2 h consomment :","0,5 kWh","2 kWh","2000 kWh",1,"1 kW × 2 h = 2 kWh."],
+["Quel dispositif protège contre les surintensités ?","Disjoncteur adapté","Interrupteur simple","Voltmètre",0,"Un disjoncteur adapté protège contre les surintensités."],
+["Avant une intervention électrique, il faut :","Toucher le fil","Couper et vérifier l'absence de tension","Ignorer les protections",1,"Il faut suivre les procédures de sécurité et vérifier l'absence de tension."],
+["La fréquence se mesure en :","Joules","Hertz","Watts",1,"La fréquence se mesure en hertz (Hz)."],
+["La fréquence représente le nombre de cycles par seconde.","Vrai","Faux","Seulement la résistance",0,"La fréquence correspond aux cycles par seconde."],
+["230 V et 5 A donnent une puissance apparente de :","46 VA","1150 VA","235 VA",1,"S = U × I = 230 × 5 = 1150 VA."],
+["La mise à la terre participe à la protection électrique.","Vrai","Faux","Elle augmente toujours la tension",0,"Elle aide à protéger contre certains défauts avec des protections adaptées."],
+["Un disjoncteur remplace toujours un différentiel.","Vrai","Faux","Les deux ont toujours la même fonction",1,"Ils assurent des fonctions de protection différentes."],
+["Le joule mesure l'énergie.","Vrai","Faux","Il mesure la fréquence",0,"Le joule est une unité d'énergie."],
+["Quelle formule relie énergie, puissance et temps ?","E=P×t","E=P+t","E=P−t",0,"L'énergie est la puissance multipliée par la durée, avec des unités cohérentes."]
+]];
+let level=0,i=0,points=0,locked=false;
+function start(n){level=n;i=0;points=0;document.getElementById('result').classList.add('hidden');document.getElementById('quiz').classList.remove('hidden');render()}
+function render(){locked=false;let q=data[level][i];document.getElementById('counter').textContent='Question '+(i+1)+' / '+data[level].length;document.getElementById('question').textContent=q[0];document.getElementById('feedback').textContent='';document.getElementById('next').classList.add('hidden');let a=document.getElementById('answers');a.replaceChildren();q.slice(1,4).forEach((v,j)=>{let b=document.createElement('button');b.textContent=v;b.onclick=()=>answer(j);a.appendChild(b)})}
+function answer(j){if(locked)return;locked=true;let q=data[level][i];if(j===q[4])points++;document.querySelectorAll('#answers button').forEach((b,k)=>{b.disabled=true;if(k===q[4])b.style.borderColor='#22c55e';else if(k===j)b.style.borderColor='#ef4444'});document.getElementById('feedback').textContent=(j===q[4]?'✓ Bonne réponse ! ':'✗ Mauvaise réponse. ')+q[5];document.getElementById('next').textContent=i===data[level].length-1?'Voir mon résultat':'Question suivante';document.getElementById('next').classList.remove('hidden')}
+function nextQ(){if(!locked)return;i++;if(i<data[level].length)render();else{document.getElementById('quiz').classList.add('hidden');document.getElementById('result').classList.remove('hidden');let p=Math.round(points/data[level].length*100);document.getElementById('score').textContent=p+' %';document.getElementById('remark').textContent=points+' bonnes réponses sur '+data[level].length+'. '+(p>=80?'Excellent travail !':p>=50?'Bon effort, continue !':'Continue à t’entraîner !')}}
+</script>
+</body>
+</html>
